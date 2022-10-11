@@ -8,7 +8,11 @@ public class UsingUnaryOperator {
 
     public static <T> List<T> map(List<T> list, UnaryOperator<T> f) {
         List<T> result = new ArrayList<>();
-        // TODO: transform each element in the list using f and put the transformed element in result
+
+        for (T obj : list) {
+            result.add(f.apply(obj));
+        }
+
         return result;
     }
 }

@@ -5,17 +5,30 @@ import java.util.function.Function;
 
 public class Calculator {
 
-    // private ...; // TODO
+    private Double result;
 
-    private Calculator(Double d) {  /*TODO*/ }
+    private Calculator(Double d) {
+        this.result = d;
+    }
 
-    public static Calculator of(Double d) { /*TODO*/return null; }
+    public static Calculator of(Double d) {
+        return new Calculator(d);
+    }
 
-    public Calculator calculate(Function<Double, Double> f) { /*TODO*/return null; }
+    public Calculator calculate(Function<Double, Double> f) {
+        return new Calculator(f.apply(this.result));
+    }
 
-    public Calculator subCalculate(Function<Double, Calculator> f) { /*TODO*/return null; }
+    public Calculator subCalculate(Function<Double, Calculator> f) {
+        return f.apply(this.result);
+    }
 
-    public Double result() { /*TODO*/return null; }
+    public Double result() {
+        return result;
+    }
 
-    public Calculator accept(Consumer<Double> c) { /*TODO*/return null; }
+    public Calculator accept(Consumer<Double> c) {
+        c.accept(this.result);
+        return this;
+    }
 }

@@ -45,7 +45,9 @@ public class AppleServiceTest {
         ArrayList<Apple> apples = testApples();
 
         //Act
-        appleService.consumeApples(apples, new AppleConsumer());
+        appleService.consumeApples(apples, (Apple apple) -> {
+            apple.setWeight(0);
+        });
         int weightZero = apples.get(0).getWeight() + apples.get(1).getWeight();
 
         //Assert
