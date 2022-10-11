@@ -1,6 +1,12 @@
 package com.example.lambdas.methodreferences;
 
+import com.example.lambdas.parametrization.apples.Apple;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MethodReferencesTest {
 
@@ -11,8 +17,15 @@ public class MethodReferencesTest {
 
     @Test
     public void testAppleFactory() {
-        // TODO:
-        //  - call the appleFactory with COLORS, WEIGHTS, and a lambda to create an apple
-        //  - assert that the returned list's length == COLORS.length * WEIGHTS.length
+        //Arrange
+        List<Apple> apples;
+
+        //Act
+        apples = target.appleFactory(COLORS, WEIGHTS, Apple::new);
+        int listSize = apples.size();
+        int expectedSize = COLORS.length * WEIGHTS.length;
+
+        //Assert
+        assertThat(listSize).isEqualTo(expectedSize);
     }
 }

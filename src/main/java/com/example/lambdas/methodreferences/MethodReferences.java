@@ -5,33 +5,34 @@ import com.example.lambdas.parametrization.apples.Apple;
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.Callable;
-import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.function.ToIntFunction;
+import java.util.function.*;
 
 public class MethodReferences {
 
     // Lab 3.1
     public void equivalentMethodReferences() {
-        ToIntFunction<String> stringToInt1 = (String s) -> Integer.parseInt(s);
-        // TODO
+        ToIntFunction<String> stringToIntLambda = (String s) -> Integer.parseInt(s);
+        ToIntFunction<String> stringToIntMethodReference = Integer::parseInt;
 
-        BiPredicate<List<String>, String> contains1 = (list, element) -> list.contains(element);
-        // TODO
+        BiPredicate<List<String>, String> containsLambda = (list, element) -> list.contains(element);
+        BiPredicate<List<String>, String> containsMethodReference = List::contains;
 
-        Predicate<String> startsWithNumber1 = (String string) -> this.startsWithNumber(string);
-        // TODO
+        Predicate<String> startsWithNumberLambda = (String string) -> this.startsWithNumber(string);
+        Predicate<String> startsWithNumberMethodReference = this::startsWithNumber;
 
         // ----------------------
 
         // Usage of these lambda's:
-
         int i42 = parse("42", (String s) -> Integer.parseInt(s));
         check(List.of("1", "2", "3"), "3", (list, element) -> list.contains(element));
         check("1abc", (String string) -> this.startsWithNumber(string));
+
+        //Method reference usage
+        int int42 = parse("42", Integer::parseInt);
+        check(List.of("1", "2", "3"), "3", List::contains);
+        check("1abc", this::startsWithNumber);
     }
 
     // Lab 3.2
@@ -39,21 +40,23 @@ public class MethodReferences {
         // For example:
         Supplier<Console> s = System::console;
         Callable<Console> c = System::console;
-
-        // etc. TODO
+        Supplier<Properties> p = System::getProperties;
     }
 
     // Lab 3.3
     public void stringMethodReferences() {
-        // TODO
+        Function<Integer, String> s = String::valueOf;
     }
 
     // Lab 3.4
     public List<Apple> appleFactory(String[] colors, int[] weights, BiFunction<String, Integer, Apple> creator) {
         List<Apple> result = new ArrayList<>();
 
-        // TODO: create apples for all combinations of colors and weights
-        //       See also unit test.
+        for (String color : colors) {
+            for (int weight : weights) {
+                result.add(creator.apply(color, weight));
+            }
+        }
 
         return result;
     }
