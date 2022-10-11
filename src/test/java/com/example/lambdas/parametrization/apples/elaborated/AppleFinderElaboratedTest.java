@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.example.lambdas.parametrization.apples.AppleStock.appleList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -26,10 +27,11 @@ public class AppleFinderElaboratedTest {
 
     @Test
     public void findApples() {
-        List<Apple> greenApples = AppleFinderElaborated.findApples(appleList(), "green", 100);
+        List<Apple> apples = AppleFinderElaborated.findApples(appleList(), "green", 100);
 
-        for (Apple greenApple : greenApples) {
-            assertEquals("green", greenApple.getColor());
+        for (Apple apple : apples) {
+            boolean found = apple.getColor().equals("green") || apple.getWeight() >= 100;
+            assertThat(found).isTrue();
         }
     }
 
