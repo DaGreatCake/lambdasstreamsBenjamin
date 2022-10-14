@@ -41,8 +41,7 @@ public class DishTest {
         String[] expectedResult = new String[]{"prawns", "rice", "season fruit"};
 
         //Act
-        menu
-                .stream()
+        menu.stream()
                 .sorted(Comparator.comparing(Dish::getName))
                 .filter(dish -> dish.getCalories() < 400)
                 .limit(3)

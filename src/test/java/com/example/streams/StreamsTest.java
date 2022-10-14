@@ -131,15 +131,13 @@ public class StreamsTest {
         expectedResult.add(new int[] {3, 3});
 
         //Act
-        Arrays.stream(numbers1)
-                .forEach(number1 -> {
-                    Arrays.stream(numbers2)
-                            .forEach(number2 -> {
-                                if ((number1 + number2) % 3 == 0) {
-                                    result.add(new int[]{number1, number2});
-                                }
-                            });
-                });
+        Arrays.stream(numbers1).forEach(number1 -> {
+            Arrays.stream(numbers2).forEach(number2 -> {
+                if ((number1 + number2) % 3 == 0) {
+                    result.add(new int[]{number1, number2});
+                }
+            });
+        });
 
         //Assert
         for (int i = 0; i < result.size(); i++) {
@@ -154,9 +152,9 @@ public class StreamsTest {
         String result;
 
         //Act
-        String[] array = Stream.of(chars).map(String::valueOf).toArray(String[]::new);
-        result = Arrays.stream(array)
-                        .collect(Collectors.joining());
+        result = Stream.of(chars)
+                    .map(String::valueOf)
+                    .collect(Collectors.joining());
 
         //Assert
         assertThat(result).isEqualTo("HelloWorld");
@@ -169,9 +167,9 @@ public class StreamsTest {
         String result;
 
         //Act
-        String[] array = Stream.of(chars).map(String::valueOf).toArray(String[]::new);
-        result = Arrays.stream(array)
-                        .collect(Collectors.joining("_"));
+        result = Stream.of(chars)
+                    .map(String::valueOf)
+                    .collect(Collectors.joining("_"));
 
         //Assert
         assertThat(result).isEqualTo("H_e_l_l_o_W_o_r_l_d");
@@ -184,10 +182,10 @@ public class StreamsTest {
         String result;
 
         //Act
-        String[] array = Stream.of(chars).map(String::valueOf).toArray(String[]::new);
-        result = Arrays.stream(array)
+        result = Stream.of(chars)
+                    .map(String::valueOf)
                     .reduce((a, b) -> a + "_" + b)
-                    .orElse("");
+                    .orElse("");;
 
         //Assert
         assertThat(result).isEqualTo("H_e_l_l_o_W_o_r_l_d");
