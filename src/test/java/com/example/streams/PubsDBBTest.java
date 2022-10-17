@@ -2,6 +2,7 @@ package com.example.streams;
 
 import com.example.streams.pubsdb.data.MemoryPubsDb;
 import com.example.streams.pubsdb.domain.model.*;
+import com.sun.source.tree.Tree;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -115,6 +116,50 @@ public class PubsDBBTest {
     @Test
     @DisplayName("Count the number of authors for each state (hint: use groupingBy).")
     public void assignment7() {
+        MemoryPubsDb database = MemoryPubsDb.getInstance();
 
+        System.out.println(database.authors.stream()
+                .collect(groupingBy(Author::getState, counting())));
+    }
+
+    @Test
+    @DisplayName("Group authors living in the same state and having their firstname starting with the same character. Use multilevel grouping. Sort by state.")
+    public void assignment8() {
+        MemoryPubsDb database = MemoryPubsDb.getInstance();
+
+        TreeMap<String, Map<Object, List<Author>>> stateAuthors = database.authors.stream()
+                .collect(groupingBy(Author::getState, TreeMap::new,
+                        groupingBy(author -> author.getFirstname().charAt(0), TreeMap::new, toList())));
+
+        stateAuthors.forEach((s, objectListMap) -> objectListMap.forEach((o, authors) -> {
+            String authorString = authors.stream()
+                                    .map(author -> author.getFirstname() + " " + author.getLastname())
+                                    .collect(joining(", "));
+            System.out.println(s + " - " + o.toString() + ": " + authorString);
+        }));
+    }
+
+    @Test
+    @DisplayName("Same as previous one, but now count the number of authors in each group.")
+    public void assignment9() {
+        MemoryPubsDb database = MemoryPubsDb.getInstance();
+
+        TreeMap<String, Map<Object, Long>> stateAuthors = database.authors.stream()
+                .collect(groupingBy(Author::getState, TreeMap::new,
+                        groupingBy(author -> author.getFirstname().charAt(0), TreeMap::new, counting())));
+
+        stateAuthors.forEach((s, objectListMap) ->
+                objectListMap.forEach((o, count) ->
+                        System.out.println(s + " - " + o.toString() + ": " + count)));
+    }
+
+    @Test
+    @DisplayName("Partition sales in two groups: those above quantity 20.00, and those below.")
+    public void assignment10() {
+        MemoryPubsDb database = MemoryPubsDb.getInstance();
+
+        database.sales.stream()
+                .collect(partitioningBy(sale -> sale.getQuantity().intValue() > 20))
+                .forEach((above20, sales) -> System.out.println(above20 + ": " + sales.toString()));
     }
 }
