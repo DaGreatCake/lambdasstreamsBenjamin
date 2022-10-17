@@ -1,5 +1,8 @@
 package com.example.optionals.car;
 
+import java.util.Objects;
+import java.util.Optional;
+
 public class Optionals {
 
     public static String getCarInsuranceNameNotSafe(Person person) {
@@ -29,6 +32,10 @@ public class Optionals {
     }
 
     public static String getCarInsuranceName(Person person) {
-        return "TODO!"; // TODO 6.1.1
+        return Optional.ofNullable(person)
+                .map(Person::getCar)
+                .map(Car::getInsurance)
+                .map(Insurance::getName)
+                .orElse("Unknown");
     }
 }
